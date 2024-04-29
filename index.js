@@ -28,6 +28,7 @@ async function run() {
     await client.connect();
     const database = client.db("Craft");
     const craftCollection = database.collection("craftCollection");
+    const categoryCollection = database.collection("categoryCollection");
 
     app.get("/craft", async (req, res) => {
         const cursor = craftCollection.find();
@@ -48,6 +49,14 @@ async function run() {
         const result = await cursor.toArray();
         res.send(result);
       });
+    app.get("/craft/:email", async (req, res) => {
+        const email = req.params.email
+        const query = { email: email }
+ 
+        const cursor = craftCollection.find(query);
+        const result = await cursor.toArray();
+        res.send(result);
+      });
 
 
  
@@ -55,10 +64,14 @@ async function run() {
 
     app.post("/add-craft", async (req, res) => {
       const newData = req.body;
-      console.log(newData);
-      console.log(newData);
+      console.log(newData); 
       const result = await craftCollection.insertOne(newData);
       res.send(result);
+    });
+    app.get("/categoryCollection", async (req, res) => {
+        const cursor = categoryCollection.find();
+        const result = await cursor.toArray();
+        res.send(result);
     });
 
 
@@ -68,6 +81,34 @@ async function run() {
         const result = await craftCollection.deleteOne(query);
         res.send(result);
     })
+
+
+    app.put("/craft-update/:id", async (req, res) => {
+        const id = req.params.id;
+        const newData = req.body;
+        console.log(id, newData);
+        const filter = { _id: new ObjectId(id) };
+        const options = { upsert: true };
+        const updateDoc = {
+          $set: {
+            email:newData.email,
+            // userName:newData.userNam,
+            name:newData.name,
+            image:newData.image,
+            rating:newData.rating,
+            price:newData.price,
+            Customization:newData.Customization,
+            processing_time:newData.processing_time,
+            stockStatus:newData.stockStatus,
+            short_description:newData.short_description,
+            sub_category:newData.sub_category,
+          },
+        };
+        console.log(updateDoc);
+        const result = await craftCollection.updateOne(filter, updateDoc, options);
+        res.send(result);
+      });
+  
 
     await client.db("admin").command({ ping: 1 });
     console.log(
@@ -85,3 +126,4 @@ app.listen(port, function () {
 });
 
 //   GQGE8mhUbwBdK2wz
+// vercel --prod
