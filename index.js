@@ -62,7 +62,12 @@ async function run() {
  
       
 
-  
+    app.post("/add-craft", async (req, res) => {
+      const newData = req.body;
+      console.log(newData); 
+      const result = await craftCollection.insertOne(newData);
+      res.send(result);
+    });
     app.get("/categoryCollection", async (req, res) => {
         const cursor = categoryCollection.find();
         const result = await cursor.toArray();
