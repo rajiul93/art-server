@@ -42,6 +42,7 @@ async function run() {
         const result = await craftCollection.findOne(query);
         res.send(result);
       });
+      // ...............................................................................................
     app.get("/craft-email/:email", async (req, res) => {
         const email = req.params.email
         const query = { email: email }
@@ -50,6 +51,10 @@ async function run() {
         const result = await cursor.toArray();
         res.send(result);
       });
+
+      // ...............................................................................................
+
+
     app.get("/craft/:email", async (req, res) => {
         const email = req.params.email
         const query = { email: email }
@@ -60,6 +65,7 @@ async function run() {
       });
 
 
+      // ...............................................................................................
  
       
 
@@ -69,11 +75,19 @@ async function run() {
       const result = await craftCollection.insertOne(newData);
       res.send(result);
     });
+
+      // ...............................................................................................
+
+
+
     app.get("/categoryCollection", async (req, res) => {
         const cursor = categoryCollection.find();
         const result = await cursor.toArray();
         res.send(result);
     });
+
+
+      // ...............................................................................................
 
 
     app.delete('/delete-craft/:id', async(req, res)=>{
@@ -82,6 +96,8 @@ async function run() {
         const result = await craftCollection.deleteOne(query);
         res.send(result);
     })
+
+      // ...............................................................................................
 
 
     app.put("/craft-update/:id", async (req, res) => {
@@ -104,7 +120,7 @@ async function run() {
             sub_category:newData.sub_category,
           },
         };
-        console.log(updateDoc);
+        
         const result = await craftCollection.updateOne(filter, updateDoc, options);
         res.send(result);
       });
