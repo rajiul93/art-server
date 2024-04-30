@@ -25,11 +25,11 @@ const client = new MongoClient(uri, {
 
 async function run() {
   try {
-    await client.connect();
+    // await client.connect();
     const database = client.db("Craft");
     const craftCollection = database.collection("craftCollection");
     const categoryCollection = database.collection("categoryCollection");
-
+// this is our all data api
     app.get("/craft", async (req, res) => {
         const cursor = craftCollection.find();
         const result = await cursor.toArray();
@@ -91,8 +91,7 @@ async function run() {
         const options = { upsert: true };
         const updateDoc = {
           $set: {
-            email:newData.email,
-            // userName:newData.userNam,
+            email:newData.email, 
             name:newData.name,
             image:newData.image,
             rating:newData.rating,
@@ -110,20 +109,14 @@ async function run() {
       });
   
 
-    await client.db("admin").command({ ping: 1 });
-    console.log(
-      "Pinged your deployment. You successfully connected to MongoDB!"
-    );
-  } finally {
-    // Ensures that the client will close when you finish/error
-    //   await client.close();
+     
+  } finally { 
   }
 }
 run().catch(console.dir);
 
 app.listen(port, function () {
-  console.log("CORS-enabled web server listening on port 5000");
+  console.log("your server is running");
 });
 
-//   GQGE8mhUbwBdK2wz
-// vercel --prod
+ 
