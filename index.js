@@ -14,7 +14,7 @@ const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const uri =
   `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.hefn8jo.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
 
-// Create a MongoClient with a MongoClientOptions object to set the Stable API version
+
 const client = new MongoClient(uri, {
   serverApi: {
     version: ServerApiVersion.v1,
@@ -29,20 +29,32 @@ async function run() {
     const database = client.db("Craft");
     const craftCollection = database.collection("craftCollection");
     const categoryCollection = database.collection("categoryCollection");
+
+
 // this is our all data api
+
+
     app.get("/craft", async (req, res) => {
         const cursor = craftCollection.find();
         const result = await cursor.toArray();
         res.send(result);
       });
+
+
       // dynamic data load api
+
+
     app.get("/craft/:id", async (req, res) => {
         const id = req.params.id
         const query = { _id: new ObjectId(id) }
         const result = await craftCollection.findOne(query);
         res.send(result);
       });
+
+
       // ...............................................................................................
+
+      
     app.get("/craft-email/:email", async (req, res) => {
         const email = req.params.email
         const query = { email: email }
